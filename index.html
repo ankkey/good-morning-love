@@ -17,29 +17,40 @@
     }
 
     .container {
-      background: rgba(255,255,255,0.25);
-      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.85);
       padding: 30px 25px;
       border-radius: 24px;
       text-align: center;
-      color: #fff;
-      max-width: 360px;
-      animation: fadeIn 1.5s ease forwards;
+      max-width: 380px;
+      animation: fadeIn 1.2s ease forwards;
     }
 
     h1 {
       font-size: 1.4rem;
       margin-bottom: 20px;
       line-height: 1.6;
+      color: #ff4f9a;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #333;
+      opacity: 0;
+    }
+
+    .show {
+      animation: fadeInUp 0.8s ease forwards;
     }
 
     button {
-      margin: 10px;
-      padding: 12px 18px;
+      margin-top: 18px;
+      padding: 12px 22px;
       border: none;
-      border-radius: 20px;
-      background: #fff;
-      color: #ff6fae;
+      border-radius: 22px;
+      background: #ff6fae;
+      color: #fff;
       font-size: 1rem;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -47,24 +58,13 @@
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-
-    .message {
-      margin-top: 15px;
-      font-size: 1.05rem;
-      line-height: 1.7;
-      opacity: 0;
-    }
-
-    .show {
-      animation: fadeInUp 1.2s ease forwards;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
     }
 
     .heart {
       position: absolute;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       background: #ff6fae;
       transform: rotate(45deg);
       animation: floatUp 6s linear infinite;
@@ -74,17 +74,17 @@
     .heart::after {
       content: '';
       position: absolute;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       background: #ff6fae;
       border-radius: 50%;
     }
 
-    .heart::before { top: -8px; left: 0; }
-    .heart::after { left: -8px; top: 0; }
+    .heart::before { top: -7px; left: 0; }
+    .heart::after { left: -7px; top: 0; }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
+      from { opacity: 0; transform: scale(0.96); }
       to { opacity: 1; transform: scale(1); }
     }
 
@@ -101,31 +101,51 @@
 </head>
 <body>
   <div class="container" id="box">
-    <h1>Bạn nhỏ nhớ ra anh rùi hả,<br>iuu của anh đi học chưa ạ ?</h1>
+    <h1 id="title">Bạn nhỏ nhớ ra anh rùi hả,<br>iuu của anh đi học chưa ạ ?</h1>
     <div id="choices">
-      <button onclick="daDiHoc()">Đã đi học rồi ạ 💼</button>
-      <button onclick="chuaDiHoc()">Chưa đi học nè 🧸</button>
+      <button onclick="startDaDiHoc()">Đã đi học rồi ạ 💼</button>
+      <button onclick="startChuaDiHoc()">Chưa đi học nè 🧸</button>
     </div>
   </div>
 
   <script>
     const box = document.getElementById('box');
+    const title = document.getElementById('title');
+    let lines = [];
+    let index = 0;
 
-    function showMessages(lines) {
+    function startSequence(selectedLines) {
       document.getElementById('choices').remove();
-      let delay = 0;
-      lines.forEach(text => {
-        const p = document.createElement('div');
-        p.className = 'message';
-        p.innerText = text;
-        box.appendChild(p);
-        setTimeout(() => p.classList.add('show'), delay);
-        delay += 1600;
-      });
+      title.remove();
+      lines = selectedLines;
+      index = 0;
+      showNext();
     }
 
-    function daDiHoc() {
-      showMessages([
+    function showNext() {
+      if (index >= lines.length) return;
+
+      const p = document.createElement('div');
+      p.className = 'message';
+      p.innerText = lines[index];
+      box.appendChild(p);
+      setTimeout(() => p.classList.add('show'), 50);
+
+      index++;
+
+      if (index < lines.length) {
+        const btn = document.createElement('button');
+        btn.innerText = 'Tiếp theo ➜';
+        btn.onclick = () => {
+          btn.remove();
+          showNext();
+        };
+        box.appendChild(btn);
+      }
+    }
+
+    function startDaDiHoc() {
+      startSequence([
         'Chúc iuu có một ngày học năng suất, học tập chăm chỉ nhé.',
         'Anh biết iuu khá là mệt sau chuyến đi, nhưng mà anh tin em bé có thể thể hiện bản thân xuất sắc.',
         'Nên là hãy tự tin vào bản thân mình nhé.',
@@ -135,8 +155,8 @@
       ]);
     }
 
-    function chuaDiHoc() {
-      showMessages([
+    function startChuaDiHoc() {
+      startSequence([
         'Sao hôm nay Phương Anh chưa đi học, có gì kể anh nghe hong nào.',
         'Anh mong công chúa nhỏ lắm rùi, thật là nhớ giọng em.'
       ]);
@@ -151,7 +171,7 @@
       setTimeout(() => heart.remove(), 7000);
     }
 
-    setInterval(createHeart, 600);
+    setInterval(createHeart, 700);
   </script>
 </body>
 </html>
