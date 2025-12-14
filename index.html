@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Good Morning 🍬</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(120deg, #ffd6e8, #cfe9ff);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(10px);
+      padding: 30px 25px;
+      border-radius: 24px;
+      text-align: center;
+      color: #fff;
+      max-width: 360px;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    button {
+      margin: 10px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 20px;
+      background: #fff;
+      color: #ff6fae;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      opacity: 0;
+    }
+
+    .show {
+      animation: fadeInUp 1.2s ease forwards;
+    }
+
+    .heart {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #ff6fae;
+      transform: rotate(45deg);
+      animation: floatUp 6s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #ff6fae;
+      border-radius: 50%;
+    }
+
+    .heart::before { top: -8px; left: 0; }
+    .heart::after { left: -8px; top: 0; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatUp {
+      from { bottom: -10%; opacity: 1; }
+      to { bottom: 110%; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="box">
+    <h1>Bạn nhỏ nhớ ra anh rùi hả,<br>iuu của anh đi học chưa ạ ?</h1>
+    <div id="choices">
+      <button onclick="daDiHoc()">Đã đi học rồi ạ 💼</button>
+      <button onclick="chuaDiHoc()">Chưa đi học nè 🧸</button>
+    </div>
+  </div>
+
+  <script>
+    const box = document.getElementById('box');
+
+    function showMessages(lines) {
+      document.getElementById('choices').remove();
+      let delay = 0;
+      lines.forEach(text => {
+        const p = document.createElement('div');
+        p.className = 'message';
+        p.innerText = text;
+        box.appendChild(p);
+        setTimeout(() => p.classList.add('show'), delay);
+        delay += 1600;
+      });
+    }
+
+    function daDiHoc() {
+      showMessages([
+        'Chúc iuu có một ngày học năng suất, học tập chăm chỉ nhé.',
+        'Anh biết iuu khá là mệt sau chuyến đi, nhưng mà anh tin em bé có thể thể hiện bản thân xuất sắc.',
+        'Nên là hãy tự tin vào bản thân mình nhé.',
+        'Phương Anh cười rất xinh, nên anh mong em sẽ có một ngày thật là vui vẻ, may mắn.',
+        'Đừng quên kể cho anh nghe về ngày hôm nay của em nhé, tớ mong em lắm đấy.',
+        'Moaz 💕'
+      ]);
+    }
+
+    function chuaDiHoc() {
+      showMessages([
+        'Sao hôm nay Phương Anh chưa đi học, có gì kể anh nghe hong nào.',
+        'Anh mong công chúa nhỏ lắm rùi, thật là nhớ giọng em.'
+      ]);
+    }
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = 4 + Math.random() * 3 + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }
+
+    setInterval(createHeart, 600);
+  </script>
+</body>
+</html>
